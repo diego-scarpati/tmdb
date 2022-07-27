@@ -115,8 +115,7 @@ const Card = ({
         </CircularProgressLabel>
       </CircularProgress>
       <Box position="relative" bottom="384px" left="70px">
-      <TbHeartPlus color="#c1121f" size="30px"/>
-      {/* bgGradient="linear(to-b, #c1121f, #780000)" */}
+        <TbHeartPlus color="#c1121f" size="30px" />
       </Box>
     </Box>
   );
