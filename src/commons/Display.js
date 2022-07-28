@@ -3,14 +3,20 @@ import { useLocation, useParams } from "react-router";
 import { Link as RouterLink } from "react-router-dom";
 import Card from "./Card";
 import { Box, Link } from "@chakra-ui/react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setSelected } from "../store/selected";
 
 const Display = (props) => {
+  const dispatch = useDispatch();
   const movies = useSelector((state) => state.movies);
   const tv = useSelector((state) => state.tvSeries);
   const location = useLocation();
   let { type } = useParams();
   console.log("🚀 ~ file: Display.js ~ line 13 ~ Display ~ type", type);
+
+  // const handleSelected = (data) => {
+  //   dispatch(setSelected(data));
+  // };
 
   if (type === undefined) type = "movie";
   useEffect(() => {
@@ -46,7 +52,11 @@ const Display = (props) => {
         mx="50px"
       >
         {props?.movieList?.map((item) => (
-          <Link as={RouterLink} to={`/search/${type}/${item.id}`} key={item.id}>
+          <Link
+            as={RouterLink}
+            to={`/search/${type}/${item.id}`}
+            key={item.id}
+          >
             <Card {...item} />
           </Link>
         ))}

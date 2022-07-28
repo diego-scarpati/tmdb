@@ -9,32 +9,49 @@ import { Image } from "@chakra-ui/image";
 import { CircularProgress, CircularProgressLabel } from "@chakra-ui/progress";
 import { TbHeartPlus } from "react-icons/tb";
 import { IoIosHeart } from "react-icons/io";
+import { useSelector } from "react-redux";
 
 const Overview = () => {
-  // const { user, setUser } = useContext(UserContext);
   const { type, id } = useParams();
   const [overviewInfo, setOverviewInfo] = useState({});
+  console.log(
+    "🚀 ~ file: Overview.js ~ line 16 ~ Overview ~ overviewInfo",
+    overviewInfo
+  );
+  const selected = useSelector(state => state.selected)
   const navigate = useNavigate();
 
   let voteColor = "green.400";
-  if (overviewInfo.vote_average < 6.5) voteColor = "yellow.400";
-  if (overviewInfo.vote_average < 4) voteColor = "red.400";
-  let cardName = overviewInfo.title ? overviewInfo.title : overviewInfo.name;
+  if (selected.vote_average < 6.5) voteColor = "yellow.400";
+  if (selected.vote_average < 4) voteColor = "red.400";
+  let cardName = selected.title ? selected.title : selected.name;
+
+  // axios
+  //   .get(`https://api.themoviedb.org/3/${type}/${id}`, {
+  //     params: { api_key: "6edac15cca9bd35488d662783103bd8f" },
+  //   })
+  //   .then((result) => result.data)
+  //   .then((data) => {
+  //     console.log("🚀 ~ file: Overview.js ~ line 30 ~ .then ~ data", data);
+  //     setOverviewInfo(data);
+  //   })
+  //   .catch((error) => console.log("Axios error: ", error));
 
   useEffect(() => {
-    axios
-      .get(`https://api.themoviedb.org/3/${type}/${id}`, {
-        params: { api_key: "6edac15cca9bd35488d662783103bd8f" },
-      })
-      .then((result) => result.data)
-      .then((data) => {
-        setOverviewInfo(data);
-      })
-      .catch((error) => console.log("Axios error: ", error));
-    axios
-      .get(`https://api.themoviedb.org/3/${type}/${id}/watch/providers`)
-      .then((res) => console.log("Providers", res.data))
-      .catch((error) => console.log(error));
+    // const getInfo = async () => {
+    //   try {
+    //     const info = await axios.get(
+    //       `https://api.themoviedb.org/3/${type}/${id}`,
+    //       {
+    //         params: { api_key: "6edac15cca9bd35488d662783103bd8f" },
+    //       }
+    //     );
+    //     return info.data;
+    //   } catch (error) {
+    //     console.log("getInfo Error:", error);
+    //   }
+    //   await setOverviewInfo(getInfo())
+    // };
   }, []);
 
   const addFavoritesHandler = async () => {
@@ -48,7 +65,6 @@ const Overview = () => {
     //         // user: user,
     //         info: overviewInfo,
     //       });
-
     //   await navigate("/");
     // } catch (error) {
     //   console.log("Add to Favorites error: ", error);
@@ -57,7 +73,7 @@ const Overview = () => {
 
   const path = "https://image.tmdb.org/t/p";
 
-  return (
+  return type === "movie" ? (
     <>
       <Box
         mx="10%"
@@ -70,7 +86,6 @@ const Overview = () => {
         bgColor="white"
         minH="450px"
         justifyContent="space-between"
-        // bgImage={`url('${path}/original${overviewInfo.poster_path}')`}
         bgImage={popcornCardH}
         bgSize="cover"
         objectFit="fill"
@@ -79,7 +94,7 @@ const Overview = () => {
       >
         <Box w="300px" h="450px" filter="auto" blur="none">
           <Image
-            src={`${path}/w342${overviewInfo.poster_path}`}
+            src={`${path}/w342${selected.poster_path}`}
             alt={cardName}
             borderRadius="20px"
           />
@@ -88,7 +103,7 @@ const Overview = () => {
           <Box display="flex" justifyContent="space-between">
             <Box display="flex" alignItems="center">
               <CircularProgress
-                value={overviewInfo.vote_average * 10}
+                value={selected.vote_average * 10}
                 color={voteColor}
                 size="50px"
                 bgColor="white"
@@ -97,11 +112,11 @@ const Overview = () => {
                 mr="10px"
               >
                 <CircularProgressLabel fontWeight="bold">
-                  {overviewInfo.vote_average?.toFixed(1)}
+                  {selected.vote_average?.toFixed(1)}
                 </CircularProgressLabel>
               </CircularProgress>
               <Text fontWeight="medium">
-                Over {overviewInfo.vote_count} votes.
+                Over {selected.vote_count} votes.
               </Text>
             </Box>
             {/* <Box position="relative" bottom="384px" left="70px"> */}
@@ -116,7 +131,88 @@ const Overview = () => {
             Overview:
           </Heading>
           <Box>
-            <Text>{overviewInfo.overview}</Text>
+            <Text mt="5px" fontWeight="medium">
+              {selected.overview}
+            </Text>
+            <Text mt="5px" fontWeight="medium">
+              Realease date: {selected.release_date}
+            </Text>
+            <Text mt="5px" fontWeight="medium">
+              Genres:{selected.genres.map((item) => " " + item.name)}
+            </Text>
+          </Box>
+        </Box>
+      </Box>
+    </>
+  ) : (
+    <>
+      <Box
+        mx="10%"
+        mt="70px"
+        p="30px"
+        borderRadius="20px"
+        border="1px"
+        overflow="hidden"
+        display="flex"
+        bgColor="white"
+        minH="450px"
+        justifyContent="space-between"
+        bgImage={popcornCardH}
+        bgSize="cover"
+        objectFit="fill"
+        bgPosition="center"
+        bgRepeat="no-repeat"
+      >
+        <Box w="300px" h="450px" filter="auto" blur="none">
+          <Image
+            src={`${path}/w342${selected.poster_path}`}
+            alt={cardName}
+            borderRadius="20px"
+          />
+        </Box>
+        <Box w="70%" borderRadius="20px" p="16px" bgColor="whiteAlpha.700">
+          <Box display="flex" justifyContent="space-between">
+            <Box display="flex" alignItems="center">
+              <CircularProgress
+                value={selected.vote_average * 10}
+                color={voteColor}
+                size="50px"
+                bgColor="white"
+                borderRadius="full"
+                m="5px"
+                mr="10px"
+              >
+                <CircularProgressLabel fontWeight="bold">
+                  {selected.vote_average?.toFixed(1)}
+                </CircularProgressLabel>
+              </CircularProgress>
+              <Text fontWeight="medium">
+                Over {selected.vote_count} votes.
+              </Text>
+            </Box>
+            <Box>
+              <TbHeartPlus color="#c1121f" size="40px" m="10px" />
+            </Box>
+          </Box>
+          <Heading as="h2" fontSize="48px">
+            {cardName}
+          </Heading>
+          <Heading as="h4" fontSize="36px" mt="10px">
+            Overview:
+          </Heading>
+          <Box>
+            <Text mt="5px" fontWeight="medium">
+              {selected.overview}
+            </Text>
+            <Text mt="5px" fontWeight="medium">
+              Seasons: {selected?.seasons?.length}
+            </Text>
+            <Text mt="5px" fontWeight="medium">
+              Genres:{selected?.genres ? selected?.genres.map((item) => " " + item.name) : ""}
+            </Text>
+            <Text mt="5px" fontWeight="medium">
+              Available:{selected?.networks ? selected?.networks.map((item) => " " + item.name) : ""}
+            </Text>
           </Box>
         </Box>
       </Box>
@@ -125,31 +221,3 @@ const Overview = () => {
 };
 
 export default Overview;
-
-/*
-adult: false
-backdrop_path: "/qBLEWvJNVsehJkEJqIigPsWyBse.jpg"
-belongs_to_collection: {id: 185103, name: 'Hotel Transylvania Collection', poster_path: '/9nR1xIcDo84gbbNZeFb9NCZYTdw.jpg', backdrop_path: '/5MJt6g7k9gADQH4xHn5mOEMa3Vr.jpg'}
-budget: 0
-genres: (5) [{…}, {…}, {…}, {…}, {…}]
-homepage: "https://www.hoteltmovie.com"
-id: 585083
-imdb_id: "tt9848626"
-original_language: "en"
-original_title: "Hotel Transylvania: Transformania"
-overview: "When Van Helsing's mysterious invention, the \"Monsterfication Ray,\" goes haywire, Drac and his monster pals are all transformed into humans, and Johnny becomes a monster. In their new mismatched bodies, Drac and Johnny must team up and race across the globe to find a cure before it's too late, and before they drive each other crazy."
-popularity: 847.447
-poster_path: "/teCy1egGQa0y8ULJvlrDHQKnxBL.jpg"
-production_companies: (4) [{…}, {…}, {…}, {…}]
-production_countries: [{…}]
-release_date: "2022-02-25"
-revenue: 0
-runtime: 87
-spoken_languages: [{…}]
-status: "Released"
-tagline: "Change can be scary."
-title: "Hotel Transylvania: Transformania"
-video: false
-vote_average: 7.1
-vote_count: 920
-*/

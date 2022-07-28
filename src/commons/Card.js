@@ -10,7 +10,8 @@ import {
 } from "@chakra-ui/react";
 import { TbHeartPlus } from "react-icons/tb";
 import { IoIosHeart } from "react-icons/io";
-// TbHeartPlus
+import { useDispatch } from "react-redux";
+import { setSelected } from "../store/selected";
 
 const Card = ({
   poster_path,
@@ -19,8 +20,21 @@ const Card = ({
   release_date,
   vote_average,
   first_air_date,
+  id,
 }) => {
+  const dispatch = useDispatch();
+  let type;
+  if (name) {
+    type = "tv";
+  } else {
+    type = "movie";
+  }
+
   const path = "https://image.tmdb.org/t/p/w342";
+
+  const handleSelected = () => {
+    dispatch(setSelected({type, id}));
+  };
 
   let voteColor = "green.400";
   if (vote_average < 6.5) voteColor = "yellow.400";
@@ -43,6 +57,7 @@ const Card = ({
       bgPosition="center"
       bgSize="cover"
       overflow="hidden"
+      onClick={handleSelected}
       // _hover={{ textDecoration: "none" }}
     >
       {poster_path ? (
