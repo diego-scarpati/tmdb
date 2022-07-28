@@ -1,14 +1,25 @@
 import React, { useState, useEffect, useContext } from "react";
+import popcornCardH from "../assets/popcornCardH.jpeg";
 import { useParams } from "react-router";
 import axios from "axios";
 import { UserContext } from "../App";
 import { useNavigate } from "react-router-dom";
+import { Box, Heading, Text } from "@chakra-ui/layout";
+import { Image } from "@chakra-ui/image";
+import { CircularProgress, CircularProgressLabel } from "@chakra-ui/progress";
+import { TbHeartPlus } from "react-icons/tb";
+import { IoIosHeart } from "react-icons/io";
 
 const Overview = () => {
   // const { user, setUser } = useContext(UserContext);
   const { type, id } = useParams();
   const [overviewInfo, setOverviewInfo] = useState({});
   const navigate = useNavigate();
+
+  let voteColor = "green.400";
+  if (overviewInfo.vote_average < 6.5) voteColor = "yellow.400";
+  if (overviewInfo.vote_average < 4) voteColor = "red.400";
+  let cardName = overviewInfo.title ? overviewInfo.title : overviewInfo.name;
 
   useEffect(() => {
     axios
@@ -20,43 +31,95 @@ const Overview = () => {
         setOverviewInfo(data);
       })
       .catch((error) => console.log("Axios error: ", error));
-  }, [id]);
+    axios
+      .get(`https://api.themoviedb.org/3/${type}/${id}/watch/providers`)
+      .then((res) => console.log("Providers", res.data))
+      .catch((error) => console.log(error));
+  }, []);
 
   const addFavoritesHandler = async () => {
-    try {
-      type === "movie"
-        ? await axios.put("http://localhost:3001/api/addMovie", {
-            // user: user,
-            info: overviewInfo,
-          })
-        : await axios.put("http://localhost:3001/api/addTv", {
-            // user: user,
-            info: overviewInfo,
-          });
+    // try {
+    //   type === "movie"
+    //     ? await axios.put("http://localhost:3001/api/addMovie", {
+    //         // user: user,
+    //         info: overviewInfo,
+    //       })
+    //     : await axios.put("http://localhost:3001/api/addTv", {
+    //         // user: user,
+    //         info: overviewInfo,
+    //       });
 
-      await navigate("/");
-    } catch (error) {
-      console.log("Add to Favorites error: ", error);
-    }
+    //   await navigate("/");
+    // } catch (error) {
+    //   console.log("Add to Favorites error: ", error);
+    // }
   };
 
-  const path = "https://image.tmdb.org/t/p/w342";
+  const path = "https://image.tmdb.org/t/p";
 
   return (
     <>
-      <div>
-        <img
-          src={`${path}${overviewInfo.poster_path}`}
-          alt={overviewInfo.name ? overviewInfo.name : overviewInfo.title}
-        />
-      </div>
-      {/* {user.id && <div onClick={addFavoritesHandler}>Add to Favorites</div>} */}
-      <div>
-        <h2>{overviewInfo.name ? overviewInfo.name : overviewInfo.title}</h2>
-        <h4>Overview</h4>
-        <p>{overviewInfo.overview}</p>
-        <p>{overviewInfo.vote_average}</p>
-      </div>
+      <Box
+        mx="10%"
+        mt="70px"
+        p="30px"
+        borderRadius="20px"
+        border="1px"
+        overflow="hidden"
+        display="flex"
+        bgColor="white"
+        minH="450px"
+        justifyContent="space-between"
+        // bgImage={`url('${path}/original${overviewInfo.poster_path}')`}
+        bgImage={popcornCardH}
+        bgSize="cover"
+        objectFit="fill"
+        bgPosition="center"
+        bgRepeat="no-repeat"
+      >
+        <Box w="300px" h="450px" filter="auto" blur="none">
+          <Image
+            src={`${path}/w342${overviewInfo.poster_path}`}
+            alt={cardName}
+            borderRadius="20px"
+          />
+        </Box>
+        <Box w="70%" borderRadius="20px" p="16px" bgColor="whiteAlpha.700">
+          <Box display="flex" justifyContent="space-between">
+            <Box display="flex" alignItems="center">
+              <CircularProgress
+                value={overviewInfo.vote_average * 10}
+                color={voteColor}
+                size="50px"
+                bgColor="white"
+                borderRadius="full"
+                m="5px"
+                mr="10px"
+              >
+                <CircularProgressLabel fontWeight="bold">
+                  {overviewInfo.vote_average?.toFixed(1)}
+                </CircularProgressLabel>
+              </CircularProgress>
+              <Text fontWeight="medium">
+                Over {overviewInfo.vote_count} votes.
+              </Text>
+            </Box>
+            {/* <Box position="relative" bottom="384px" left="70px"> */}
+            <Box>
+              <TbHeartPlus color="#c1121f" size="40px" m="10px" />
+            </Box>
+          </Box>
+          <Heading as="h2" fontSize="48px">
+            {cardName}
+          </Heading>
+          <Heading as="h4" fontSize="36px" mt="10px">
+            Overview:
+          </Heading>
+          <Box>
+            <Text>{overviewInfo.overview}</Text>
+          </Box>
+        </Box>
+      </Box>
     </>
   );
 };

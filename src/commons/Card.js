@@ -1,5 +1,5 @@
 import noImg from "../assets/noImg.jpeg";
-import popcornCard from "../assets/popcornCard.jpeg";
+import popcornCardV from "../assets/popcornCardV.jpeg";
 import {
   Box,
   Heading,
@@ -31,8 +31,6 @@ const Card = ({
     <Box
       w="230px"
       h="360px"
-      // border="1px"
-      // borderColor="#fdf0d5"
       borderRadius="20px"
       mx="10px"
       my="15px"
@@ -41,7 +39,7 @@ const Card = ({
       display="flex"
       flexDirection="column"
       boxShadow="xl"
-      bgImage={popcornCard}
+      bgImage={popcornCardV}
       bgPosition="center"
       bgSize="cover"
       overflow="hidden"
@@ -72,7 +70,6 @@ const Card = ({
           my="5px"
         />
       )}
-      {/* <Box bgColor="#c1121f" boxShadow="inner" color="#fdf0d5" > */}
       <Box
         boxShadow="inner"
         color="#fdf0d5"

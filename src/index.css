@@ -12,8 +12,30 @@
   margin: 0;
   text-decoration: none;
 }
-*:hover{
+*:hover {
   text-decoration: none;
+}
+
+#body {
+  position: relative;
+  overflow: hidden;
+}
+
+#body::before {
+  content: "";
+  position: absolute;
+  width: 3000px;
+  height: 300%;
+  top: -50%;
+  left: -50%;
+  z-index: -1;
+  background-color: #003049;
+  /* background-image: url(./assets/popcornBG.png); */
+  background-image: url(./assets/popcornIcon1.png);
+  background-size: 120px;
+  background-position: 0 20px;
+  background-repeat: repeat;
+  transform: rotate(-30deg);
 }
 
 /* body {
@@ -23,7 +45,6 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 } */
-
 
 /* code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
