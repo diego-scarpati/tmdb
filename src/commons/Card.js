@@ -12,6 +12,7 @@ import { TbHeartPlus } from "react-icons/tb";
 import { IoIosHeart } from "react-icons/io";
 import { useDispatch } from "react-redux";
 import { setSelected } from "../store/selected";
+import { setProviders } from "../store/providers";
 
 const Card = ({
   poster_path,
@@ -33,7 +34,8 @@ const Card = ({
   const path = "https://image.tmdb.org/t/p/w342";
 
   const handleSelected = () => {
-    dispatch(setSelected({type, id}));
+    dispatch(setSelected({ type, id }));
+    dispatch(setProviders({ type, id }));
   };
 
   let voteColor = "green.400";
@@ -58,7 +60,7 @@ const Card = ({
       bgSize="cover"
       overflow="hidden"
       onClick={handleSelected}
-      // _hover={{ textDecoration: "none" }}
+      _hover={{ transform: "scale(1.05)" }}
     >
       {poster_path ? (
         <Image

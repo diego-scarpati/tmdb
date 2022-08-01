@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
 import SearchBar from "./commons/SearchBar";
 import Header from "./components/Header";
 import Display from "./commons/Display";
@@ -12,17 +13,18 @@ import Users from "./components/Users";
 import getMovies from "./utils/getMovies";
 import getTv from "./utils/getTv";
 import { Box } from "@chakra-ui/react";
-import { useDispatch } from "react-redux";
 import { setMovies } from "./store/movies";
 import { setTv } from "./store/tv";
+import { setGeoInfo } from "./store/geoInfo";
 import "./index.css";
 
 const App = () => {
 
   const [movieList, setMovieList] = useState([]);
   const [tvList, setTvList] = useState([]);
-  const [searchedList, setSearchedList] = useState([]);
   const dispatch = useDispatch();
+
+  console.log(".env", process.env.TMDB_API_KEY)
 
   useEffect(() => {
     const getData = async () => {
@@ -32,14 +34,10 @@ const App = () => {
       await setTvList(tv?.results);
       dispatch(setMovies());
       dispatch(setTv());
+      dispatch(setGeoInfo())
     };
     getData();
   }, []);
-
-  const saveSearchDataHandler = (enteredSearchData) => {
-    console.log(enteredSearchData);
-    setSearchedList(enteredSearchData);
-  };
 
   return (
     <React.StrictMode>
@@ -50,9 +48,8 @@ const App = () => {
             path="/"
             element={
               <>
-                <SearchBar onSaveSearchData={saveSearchDataHandler} />
+                <SearchBar />
                 <Display
-                  searchedList={searchedList}
                   movieList={movieList}
                   tvList={tvList}
                 />
@@ -63,9 +60,8 @@ const App = () => {
             path="search/:type"
             element={
               <>
-                <SearchBar onSaveSearchData={saveSearchDataHandler} />
+                <SearchBar />
                 <Display
-                  searchedList={searchedList}
                   movieList={movieList}
                   tvList={tvList}
                 />

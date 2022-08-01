@@ -1,30 +1,27 @@
 import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useParams } from "react-router";
 import { Link as RouterLink } from "react-router-dom";
 import Card from "./Card";
 import { Box, Link } from "@chakra-ui/react";
-import { useDispatch, useSelector } from "react-redux";
 import { setSelected } from "../store/selected";
 
 const Display = (props) => {
   const dispatch = useDispatch();
   const movies = useSelector((state) => state.movies);
   const tv = useSelector((state) => state.tvSeries);
+  const search = useSelector(state => state.search)
   const location = useLocation();
   let { type } = useParams();
-  console.log("🚀 ~ file: Display.js ~ line 13 ~ Display ~ type", type);
-
-  // const handleSelected = (data) => {
-  //   dispatch(setSelected(data));
-  // };
-
+  
+  console.log(search.results.length)
   if (type === undefined) type = "movie";
   useEffect(() => {
     console.log("Se ejecuto el useEffect de Display");
     console.log("🚀 ~ file: Display.js ~ line 23 ~ Display ~ type", type);
   }, [location]);
 
-  if (props?.searchedList?.length > 0) {
+  if (search.results.length > 1) {
     return (
       <Box
         display="flex"
@@ -33,7 +30,7 @@ const Display = (props) => {
         p="10px"
         mx="50px"
       >
-        {props.searchedList.map((item) => (
+        {search.results.map((item) => (
           <Link as={RouterLink} to={`/search/${type}/${item.id}`} key={item.id}>
             <Card {...item} />
           </Link>

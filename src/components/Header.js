@@ -1,41 +1,26 @@
-import axios from "axios";
-import React, { useContext, useEffect } from "react";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
-import { useLocalStorage } from "../hooks/useLocalStorage";
-import { Box, Heading, Image, Link } from "@chakra-ui/react";
+import { useDispatch } from "react-redux";
+import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
+import { Box, Button, Heading, Image, Link } from "@chakra-ui/react";
 import popcorn from "../assets/popcorn32.png";
+import { deleteSearchData } from "../store/search";
 
 const Header = () => {
-  const [, setUserLS] = useLocalStorage("user", "");
-  // const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
+  const location = useLocation();
+  let type = location.pathname.split("/");
+  const dispatch = useDispatch();
+  const deletedSearchData = { results: [{ name: "" }], page: 0 };
 
-  const logoutHandler = async () => {
-    try {
-      await axios.post("http://localhost:3001/api/logout");
-      // setUser({});
-      setUserLS("");
-      window.localStorage.removeItem("user");
-      navigate("/");
-    } catch (error) {
-      console.log("Logout error: ", error);
-    }
-  };
-
-  // useEffect(()=>{
-  //   setUser(getUser())
-  // }, [])
-
-  // --darkRed: #780000;
-  // --red: #c1121f;
-  // --beige: #fdf0d5;
-  // --darkBlue: #003049;
-  // --lightBlue: #669bbc;
-
-  // const userLS = window.localStorage.getItem("user");
-  // console.log("userLS: ", userLS);
-  // console.log("typeof userLS: ", typeof userLS);
-  // console.log("User desde Header:", user.favorites)
+  // const logoutHandler = async () => {
+  //   try {
+  //     await axios.post("http://localhost:3001/api/logout");
+  //     setUserLS("");
+  //     window.localStorage.removeItem("user");
+  //     navigate("/");
+  //   } catch (error) {
+  //     console.log("Logout error: ", error);
+  //   }
+  // };
 
   return (
     <>
@@ -45,19 +30,23 @@ const Header = () => {
         flexDirection="row"
         justifyContent="space-between"
         alignItems="center"
-        p="10px"
+        px="10px"
         boxShadow="lg"
         w="100%"
         h="70px"
-        // bgColor="#c1121f"
         color="#fdf0d5"
         textDecoration="none"
         textDecorationLine="none"
         bgGradient="linear(to-b, #c1121f, #780000)"
-        // bgImage={}
       >
         <Box w="25%">
-          <Link as={RouterLink} to="/" display="flex" flexDirection="row" w="117px">
+          <Link
+            as={RouterLink}
+            to="/"
+            display="flex"
+            flexDirection="row"
+            w="117px"
+          >
             <Image src={popcorn} objectFit="cover" />
             <Heading size="lg" fontSize="26px" pl="10px">
               TMDB
@@ -70,21 +59,54 @@ const Header = () => {
           flexDirection="row"
           justifyContent="space-around"
         >
-          <Link as={RouterLink} to="search/movie">
-            <Heading size="lg" fontSize="26px">
-              Movies
-            </Heading>
-          </Link>
-          <Link as={RouterLink} to="search/tv">
-            <Heading size="lg" fontSize="26px">
-              TV Shows
-            </Heading>
-          </Link>
-          <Link as={RouterLink} to="/users">
-            <Heading size="lg" fontSize="26px">
-              Users
-            </Heading>
-          </Link>
+          <Button
+            size="md"
+            colorScheme={
+              type.indexOf("movie") !== -1 ? "whiteAlpha" : "blackAlpha"
+            }
+            as="a"
+            mx="2px"
+            fontSize="20px"
+            color="#fdf0d5"
+            onClick={() => {
+              dispatch(deleteSearchData(deletedSearchData));
+              navigate("search/movie");
+            }}
+          >
+            Movies
+          </Button>
+          <Button
+            size="md"
+            colorScheme={
+              type.indexOf("tv") !== -1 ? "whiteAlpha" : "blackAlpha"
+            }
+            as="a"
+            mx="2px"
+            fontSize="20px"
+            color="#fdf0d5"
+            onClick={() => {
+              dispatch(deleteSearchData(deletedSearchData));
+              navigate("search/tv");
+            }}
+          >
+            TV Shows
+          </Button>
+          <Button
+            size="md"
+            colorScheme={
+              type.indexOf("users") !== -1 ? "whiteAlpha" : "blackAlpha"
+            }
+            as="a"
+            mx="2px"
+            fontSize="20px"
+            color="#fdf0d5"
+            onClick={() => {
+              dispatch(deleteSearchData(deletedSearchData));
+              navigate("/users");
+            }}
+          >
+            Users
+          </Button>
         </Box>
         <Box
           w="25%"
@@ -92,36 +114,29 @@ const Header = () => {
           flexDirection="row"
           justifyContent="flex-end"
         >
-          <Link as={RouterLink} to="/login">
-            <Heading size="lg" fontSize="26px" pl="15px">
-              Log In
-            </Heading>
-          </Link>
-          <Link as={RouterLink} to="/register">
-            <Heading size="lg" fontSize="26px" px="15px">
-              Register
-            </Heading>
-          </Link>
+          <Button
+            size="md"
+            colorScheme={"blackAlpha"}
+            as="a"
+            fontSize="20px"
+            mx="2px"
+            color="#fdf0d5"
+            onClick={() => navigate("/register")}
+          >
+            Log In
+          </Button>
+          <Button
+            size="md"
+            colorScheme={"blackAlpha"}
+            as="a"
+            fontSize="20px"
+            mx="2px"
+            color="#fdf0d5"
+            onClick={() => navigate("/register")}
+          >
+            Register
+          </Button>
         </Box>
-
-        {/* <div>
-        {userLS === null && (
-          <>
-            <Link to="/login">Login</Link>
-            <Link to="/register">Register</Link>
-          </>
-        )}
-        {userLS && (
-          <>
-            <Link to="/profile">
-              <h3>{`${user.name}${user.lastName}`}</h3>
-            </Link>
-            <div onClick={logoutHandler}>
-              <p>Logout</p>
-            </div>
-          </>
-        )}
-      </div> */}
       </Box>
     </>
   );

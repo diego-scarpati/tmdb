@@ -1,11 +1,10 @@
 import { createAsyncThunk, createReducer } from "@reduxjs/toolkit";
-import axios from "axios";
 import getSelected from "../utils/getSelected";
 
 export const setSelected = createAsyncThunk(
   "GET_SELECTED_TMDB",
   async (data, thunkAPI) => {
-    console.log("redux data", data)
+    console.log("redux data", data);
     const { type, id } = data;
     try {
       const selected = getSelected(type, id);
@@ -17,7 +16,7 @@ export const setSelected = createAsyncThunk(
 );
 
 export const selectedReducer = createReducer(
-  {},
+  { genres: [{ name: "" }], networks: [{ name: "" }] },
   {
     [setSelected.fulfilled]: (state, action) => action.payload,
     [setSelected.rejected]: (state, action) =>
