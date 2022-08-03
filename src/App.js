@@ -17,6 +17,7 @@ import { setMovies } from "./store/movies";
 import { setTv } from "./store/tv";
 import { setGeoInfo } from "./store/geoInfo";
 import "./index.css";
+import { setUser } from "./store/user";
 
 const App = () => {
 
@@ -35,6 +36,7 @@ const App = () => {
       dispatch(setMovies());
       dispatch(setTv());
       dispatch(setGeoInfo())
+      dispatch(setUser())
     };
     getData();
   }, []);

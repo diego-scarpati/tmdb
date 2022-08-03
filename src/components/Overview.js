@@ -131,7 +131,7 @@ const Overview = () => {
               <Box mt="5px" display="flex">
                 {providers[country.country_code]?.flatrate !== undefined ? (
                   providers[country.country_code]?.flatrate.map((provider) => (
-                    <Provider key={provider.provider_id} {...provider} />
+                    <Provider key={provider.provider_id} {...provider}/>
                   ))
                 ) : (
                   <Text fontWeight="medium">
@@ -226,12 +226,6 @@ const Overview = () => {
                 Genres:
                 {selected?.genres
                   ? selected?.genres.map((item) => " " + item.name)
-                  : ""}
-              </Text>
-              <Text mt="5px" fontWeight="medium">
-                Available:
-                {selected?.networks
-                  ? selected?.networks.map((item) => " " + item.name)
                   : ""}
               </Text>
               <Box display="flex">

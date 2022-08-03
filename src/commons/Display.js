@@ -14,12 +14,12 @@ const Display = (props) => {
   const location = useLocation();
   let { type } = useParams();
   
-  console.log(search.results.length)
   if (type === undefined) type = "movie";
-  useEffect(() => {
-    console.log("Se ejecuto el useEffect de Display");
-    console.log("🚀 ~ file: Display.js ~ line 23 ~ Display ~ type", type);
-  }, [location]);
+  
+  // useEffect(() => {
+  //   console.log("Se ejecuto el useEffect de Display");
+  //   console.log("🚀 ~ file: Display.js ~ line 23 ~ Display ~ type", type);
+  // }, [location]);
 
   if (search.results.length > 1) {
     return (
@@ -29,6 +29,7 @@ const Display = (props) => {
         justifyContent="space-evenly"
         p="10px"
         mx="50px"
+        my="20px"
       >
         {search.results.map((item) => (
           <Link as={RouterLink} to={`/search/${type}/${item.id}`} key={item.id}>
@@ -47,6 +48,7 @@ const Display = (props) => {
         justifyContent="space-evenly"
         p="10px"
         mx="50px"
+        my="20px"
       >
         {props?.movieList?.map((item) => (
           <Link
@@ -69,6 +71,7 @@ const Display = (props) => {
         justifyContent="space-evenly"
         p="10px"
         mx="50px"
+        my="20px"
       >
         {props?.tvList?.map((item) => (
           <Link as={RouterLink} to={`/search/${type}/${item.id}`} key={item.id}>

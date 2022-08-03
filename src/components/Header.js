@@ -3,6 +3,9 @@ import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
 import { Box, Button, Heading, Image, Link } from "@chakra-ui/react";
 import popcorn from "../assets/popcorn32.png";
 import { deleteSearchData } from "../store/search";
+import ModalLogin from "./ModalLogin";
+import ModalRegister from "./ModalRegister";
+import MenuBtn from "./MenuBtn";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -30,7 +33,7 @@ const Header = () => {
         flexDirection="row"
         justifyContent="space-between"
         alignItems="center"
-        px="10px"
+        px="30px"
         boxShadow="lg"
         w="100%"
         h="70px"
@@ -113,19 +116,12 @@ const Header = () => {
           display="flex"
           flexDirection="row"
           justifyContent="flex-end"
+          alignItems="center"
         >
-          <Button
-            size="md"
-            colorScheme={"blackAlpha"}
-            as="a"
-            fontSize="20px"
-            mx="2px"
-            color="#fdf0d5"
-            onClick={() => navigate("/register")}
-          >
-            Log In
-          </Button>
-          <Button
+          <MenuBtn />
+          {/* <ModalLogin /> */}
+          {/* <ModalRegister /> */}
+          {/* <Button
             size="md"
             colorScheme={"blackAlpha"}
             as="a"
@@ -135,7 +131,7 @@ const Header = () => {
             onClick={() => navigate("/register")}
           >
             Register
-          </Button>
+          </Button> */}
         </Box>
       </Box>
     </>

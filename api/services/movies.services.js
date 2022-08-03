@@ -5,7 +5,7 @@ const addMovie = async (data) => {
   try {
     const user = await User.findByPk(id);
     const addedMovie = await Movie.findOrCreate({
-      where: { name: movie.name },
+      where: { movieId: movie.id },
       include: { model: User },
       defaults: { ...movie },
     });

@@ -5,14 +5,14 @@ class Movie extends S.Model {}
 
 Movie.init(
   {
-    name: {
-      type: S.STRING,
-      allowNull: false,
-    },
     movieId: {
       type: S.INTEGER,
       allowNull: false,
       unique: true,
+    },
+    name: {
+      type: S.STRING,
+      allowNull: false,
     },
     genreIds: {
       type: S.ARRAY(S.INTEGER),

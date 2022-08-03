@@ -3,9 +3,12 @@ const db = require("../db");
 const bcrypt = require("bcrypt");
 
 class User extends S.Model {
-  hash = function (plainPassword, salt) {
-    return bcrypt.hash(plainPassword, salt);
-  };
+  encryptPassword(password, salt) {
+    return bcrypt.hash(password, salt);
+  }
+  async comparePassword(password) {
+    return bcrypt.compare(password, this.password);
+  }
 }
 
 User.init(
@@ -13,6 +16,7 @@ User.init(
     username: {
       type: S.STRING,
       allowNull: false,
+      unique: true,
     },
     name: {
       type: S.STRING,
@@ -25,6 +29,7 @@ User.init(
     email: {
       type: S.STRING,
       allowNull: false,
+      unique: true,
       validate: {
         isEmail: true,
       },
@@ -32,28 +37,27 @@ User.init(
     password: {
       type: S.STRING,
     },
-    salt: {
-      type: S.STRING,
-    },
+    // salt: {
+    //   type: S.STRING,
+    // },
   },
   { sequelize: db, modelName: "user" }
 );
 
-User.beforeCreate((user) => {
-  return bcrypt
-    .genSalt(16)
-    .then((salt) => {
-      user.salt = salt;
-      return user.hash(user.password, user.salt);
-    })
-    .then((hash) => {
-      user.password = hash;
-    });
+User.beforeCreate(async (user) => {
+  if (!user.password) return;
+  try {
+    const salt = await bcrypt.genSalt(8);
+    const passwordHash = await user.encryptPassword(user.password, salt);
+    user.password = passwordHash;
+  } catch (e) {
+    throw new Error("ERROR PASSWORD");
+  }
 });
 
-const saltRounds = 16;
-bcrypt.genSalt(saltRounds).then((salt) => {
-  User.salt = salt;
-});
+// const saltRounds = 8;
+// bcrypt.genSalt(saltRounds).then((salt) => {
+//   User.salt = salt;
+// });
 
 module.exports = User;

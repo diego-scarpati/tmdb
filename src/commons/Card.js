@@ -124,7 +124,7 @@ const Card = ({
         borderRadius="full"
         border="0px"
       >
-        <CircularProgressLabel fontWeight="bold">
+        <CircularProgressLabel fontWeight="bold" color="#003049">
           {vote_average.toFixed(1)}
         </CircularProgressLabel>
       </CircularProgress>
