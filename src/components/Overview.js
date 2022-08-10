@@ -10,6 +10,7 @@ import Provider from "../commons/Provider";
 import popcornCardH from "../assets/popcornCardH.jpeg";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { Button } from "@chakra-ui/react";
+import AddButton from "../commons/AddButton";
 
 const Overview = () => {
   const { type, id } = useParams();
@@ -109,7 +110,8 @@ const Overview = () => {
                 </Text>
               </Box>
               <Box>
-                <TbHeartPlus color="#c1121f" size="40px" m="10px" />
+                {/* <TbHeartPlus color="#c1121f" size="40px" m="10px" /> */}
+                <AddButton />
               </Box>
             </Box>
             <Heading as="h2" fontSize="48px">

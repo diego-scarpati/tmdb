@@ -8,8 +8,6 @@ import {
   CircularProgress,
   CircularProgressLabel,
 } from "@chakra-ui/react";
-import { TbHeartPlus } from "react-icons/tb";
-import { IoIosHeart } from "react-icons/io";
 import { useDispatch } from "react-redux";
 import { setSelected } from "../store/selected";
 import { setProviders } from "../store/providers";
@@ -42,6 +40,7 @@ const Card = ({
   if (vote_average < 6.5) voteColor = "yellow.400";
   if (vote_average < 4) voteColor = "red.400";
   let cardName = title ? title : name;
+  let releaseDate = release_date ? release_date : first_air_date;
 
   return (
     <Box
@@ -60,7 +59,6 @@ const Card = ({
       bgSize="cover"
       overflow="hidden"
       onClick={handleSelected}
-      _hover={{ transform: "scale(1.05)" }}
     >
       {poster_path ? (
         <Image
@@ -109,7 +107,7 @@ const Card = ({
           pt="5px"
           pb="15px"
         >
-          {release_date ? release_date : first_air_date}
+          {releaseDate ? releaseDate : "Missing date"}
         </Text>
       </Box>
       <CircularProgress
@@ -128,9 +126,6 @@ const Card = ({
           {vote_average.toFixed(1)}
         </CircularProgressLabel>
       </CircularProgress>
-      <Box position="relative" bottom="384px" left="70px">
-        <TbHeartPlus color="#c1121f" size="30px" />
-      </Box>
     </Box>
   );
 };

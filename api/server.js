@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use("/api", routes);
-app.use("/", (req, res, next) => res.redirect("/api"));
+// app.use("/", (req, res, next) => res.redirect("/api"));
 
 const PORT = process.env.PORT_BACK || 3002
 

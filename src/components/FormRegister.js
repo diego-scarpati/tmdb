@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {
   FormControl,
   FormLabel,
@@ -13,7 +13,7 @@ import axios from "axios";
 import useInput from "../hooks/useInputs";
 
 const FormRegister = ({onClose}) => {
-  const [show, setShow] = React.useState(false);
+  const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
 
   const username = useInput()

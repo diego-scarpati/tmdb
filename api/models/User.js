@@ -37,9 +37,6 @@ User.init(
     password: {
       type: S.STRING,
     },
-    // salt: {
-    //   type: S.STRING,
-    // },
   },
   { sequelize: db, modelName: "user" }
 );
@@ -54,10 +51,5 @@ User.beforeCreate(async (user) => {
     throw new Error("ERROR PASSWORD");
   }
 });
-
-// const saltRounds = 8;
-// bcrypt.genSalt(saltRounds).then((salt) => {
-//   User.salt = salt;
-// });
 
 module.exports = User;

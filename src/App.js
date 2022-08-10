@@ -3,7 +3,7 @@ import { Navigate, Route, Routes } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import SearchBar from "./commons/SearchBar";
 import Header from "./components/Header";
-import Display from "./commons/Display";
+import Display from "./components/Display";
 import NotFound from "./commons/NotFound";
 import Overview from "./components/Overview";
 import Login from "./components/Login";

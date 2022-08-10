@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Card from "../commons/Card";
 import axios from "axios";
@@ -7,7 +7,22 @@ import { useSelector } from "react-redux";
 
 const Profile = () => {
   const navigate = useNavigate();
-  const user = useSelector(state => state.user)
+  const user = useSelector((state) => state.user);
+  const [movies, setMovies] = useState([]);
+
+  useEffect(() => {
+    const allMovies = async () => {
+      try {
+        const allUserMovies = await axios.get(
+          `http://localhost:3002/api/movies/allUserMovies?id=${user.id}`
+        );
+        setMovies(allUserMovies.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    allMovies();
+  }, []);
 
   return (
     <Box
@@ -19,9 +34,7 @@ const Profile = () => {
       borderRadius="md"
       color="#003049"
     >
-      <Heading>
-        Hi {user.name}!
-      </Heading>
+      <Heading>Hi {user.name}!</Heading>
       <Box>
         <h2>Favorite Movies: </h2>
       </Box>

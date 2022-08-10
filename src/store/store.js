@@ -7,6 +7,7 @@ import { selectedReducer } from "./selected";
 import { geoInfoReducer } from "./geoInfo";
 import { providersReducer } from "./providers";
 import { searchReducer } from "./search";
+import { addMovieReducer } from "./added";
 
 const store = configureStore({
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
@@ -18,6 +19,7 @@ const store = configureStore({
     geoInfo: geoInfoReducer,
     providers: providersReducer,
     search: searchReducer,
+    addMovie: addMovieReducer,
   },
 });
 
