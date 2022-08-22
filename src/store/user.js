@@ -27,7 +27,6 @@ export const logInRequest = createAsyncThunk(
       localStorage.setItem("user", JSON.stringify(userData));
       return userData;
     } catch (error) {
-      if (error.response.status === 404) console.log("aca deberia ir el toast")
       console.log(error);
     }
   }

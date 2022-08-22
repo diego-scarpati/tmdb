@@ -20,7 +20,7 @@ Movie.init(
     overview: {
       type: S.TEXT,
     },
-    releaseDate: {
+    release_date: {
       type: S.STRING,
     },
     poster_path: {

@@ -4,7 +4,6 @@ import getSelected from "../utils/getSelected";
 export const setSelected = createAsyncThunk(
   "GET_SELECTED_TMDB",
   async (data, thunkAPI) => {
-    console.log("redux data", data);
     const { type, id } = data;
     try {
       const selected = getSelected(type, id);

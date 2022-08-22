@@ -8,9 +8,11 @@ import { geoInfoReducer } from "./geoInfo";
 import { providersReducer } from "./providers";
 import { searchReducer } from "./search";
 import { addMovieReducer } from "./added";
+import { userMoviesReducer } from "./userMovies";
+import { userTvsReducer } from "./userTvs";
 
 const store = configureStore({
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
+  // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
   reducer: {
     user: userReducer,
     movies: moviesReducer,
@@ -20,6 +22,8 @@ const store = configureStore({
     providers: providersReducer,
     search: searchReducer,
     addMovie: addMovieReducer,
+    userMovies: userMoviesReducer,
+    userTvs: userTvsReducer,
   },
 });
 

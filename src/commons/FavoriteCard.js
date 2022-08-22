@@ -4,7 +4,6 @@ import noImg from "../assets/noImg.jpeg"
 const FavoriteCard = () => {
   const path = "https://image.tmdb.org/t/p/w185";
 
-  // console.log(item)
   return (
     <div>
       {poster_path ? (

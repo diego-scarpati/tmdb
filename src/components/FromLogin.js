@@ -1,20 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   FormControl,
   FormLabel,
-  FormErrorMessage,
-  FormHelperText,
+  // FormErrorMessage,
+  // FormHelperText,
   Input,
   InputGroup,
   InputRightElement,
   Button,
+  Box,
 } from "@chakra-ui/react";
 import useInput from "../hooks/useInputs";
 import { useDispatch } from "react-redux";
 import { logInRequest } from "../store/user";
 
-const FormLogin = ({onClose}) => {
-  const [show, setShow] = React.useState(false);
+const FormLogin = ({ onClose }) => {
+  const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
   const dispatch = useDispatch();
 
@@ -28,7 +29,7 @@ const FormLogin = ({onClose}) => {
         password: password.value,
       })
     );
-    onClose()
+    onClose();
   };
 
   return (
@@ -50,15 +51,11 @@ const FormLogin = ({onClose}) => {
           </Button>
         </InputRightElement>
       </InputGroup>
-      <Button
-        onClick={submitHandler}
-        mt="15px"
-        position="relative"
-        left="378px"
-        colorScheme="whatsapp"
-      >
-        Submit
-      </Button>
+      <Box display="flex" justifyContent="flex-end">
+        <Button onClick={submitHandler} mt="15px" colorScheme="whatsapp">
+          Submit
+        </Button>
+      </Box>
     </FormControl>
   );
 };

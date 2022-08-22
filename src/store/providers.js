@@ -4,7 +4,6 @@ import getProviders from "../utils/getProviders";
 export const setProviders = createAsyncThunk(
   "SET_PROVIDERS",
   async (data, thunkAPI) => {
-    console.log("redux data", data);
     const { type, id } = data;
     try {
       const providers = getProviders(type, id);

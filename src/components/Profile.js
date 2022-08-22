@@ -1,27 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import Card from "../commons/Card";
-import axios from "axios";
-import { Box, Heading } from "@chakra-ui/react";
+import { Box, Heading, Link } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
+import { userMovies } from "../utils/getUserMovies";
+import AddedButton from "../commons/AddedButton";
+import { userTvs } from "../utils/getUserTvs";
 
 const Profile = () => {
-  const navigate = useNavigate();
   const user = useSelector((state) => state.user);
   const [movies, setMovies] = useState([]);
+  const [tvs, setTvs] = useState([]);
 
   useEffect(() => {
-    const allMovies = async () => {
-      try {
-        const allUserMovies = await axios.get(
-          `http://localhost:3002/api/movies/allUserMovies?id=${user.id}`
-        );
-        setMovies(allUserMovies.data);
-      } catch (error) {
-        console.log(error);
-      }
+    const getUserFavs = async () => {
+      const userMovieFavs = await userMovies(user.id);
+      await setMovies(userMovieFavs);
+      const userTvFavs = await userTvs(user.id);
+      await setTvs(userTvFavs);
     };
-    allMovies();
+    getUserFavs();
   }, []);
 
   return (
@@ -30,16 +27,76 @@ const Profile = () => {
       my="40px"
       mx="auto"
       p={4}
-      bgColor="whiteAlpha.800"
+      bgColor="#fdf0d5"
       borderRadius="md"
       color="#003049"
     >
       <Heading>Hi {user.name}!</Heading>
-      <Box>
-        <h2>Favorite Movies: </h2>
+      <Box mt={8} mb={4} p={4} bgColor="whiteAlpha.800" borderRadius="md">
+        <Heading fontSize={"xl"} m={4}>
+          Favorite Movies:
+        </Heading>
+        <Box
+          display="flex"
+          flexWrap="wrap"
+          justifyContent="space-evenly"
+          my={4}
+        >
+          {movies.length &&
+            movies.map((movie) => (
+              <Box key={movie.movieId}>
+                <Box
+                  position="relative"
+                  m="0px"
+                  left="180px"
+                  top="70px"
+                  w="30px"
+                  h="30px"
+                  zIndex="1"
+                >
+                  <AddedButton
+                    id={movie.movieId}
+                    type="movie"
+                    setMovies={setMovies}
+                  />
+                </Box>
+                <Link to={`/search/movie/${movie.movieId}`}>
+                  <Card {...movie} />
+                </Link>
+              </Box>
+            ))}
+        </Box>
       </Box>
-      <Box>
-        <h2>Favorite Tv Series: </h2>
+      <Box mt={8} mb={4} p={4} bgColor="whiteAlpha.800" borderRadius="md">
+        <Heading fontSize={"xl"} m={4}>
+          Favorite Tv Series:
+        </Heading>
+        <Box
+          display="flex"
+          flexWrap="wrap"
+          justifyContent="space-evenly"
+          my={4}
+        >
+          {tvs.length &&
+            tvs.map((tv) => (
+              <Box key={tv.tvId}>
+                <Box
+                  position="relative"
+                  m="0px"
+                  left="180px"
+                  top="70px"
+                  w="30px"
+                  h="30px"
+                  zIndex="1"
+                >
+                  <AddedButton id={tv.tvId} type="tv" setTvs={setTvs} />
+                </Box>
+                <Link to={`/search/tv/${tv.tvId}`}>
+                  <Card {...tv} />
+                </Link>
+              </Box>
+            ))}
+        </Box>
       </Box>
     </Box>
   );

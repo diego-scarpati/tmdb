@@ -1,53 +1,68 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import {
   FormControl,
   FormLabel,
-  FormErrorMessage,
-  FormHelperText,
+  // FormErrorMessage,
+  // FormHelperText,
   Input,
   InputGroup,
   InputRightElement,
   Button,
+  Box,
+  useToast
 } from "@chakra-ui/react";
 import axios from "axios";
 import useInput from "../hooks/useInputs";
 
-const FormRegister = ({onClose}) => {
+const FormRegister = ({ onClose }) => {
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
+  const toast = useToast();
 
-  const username = useInput()
-  const name = useInput()
-  const lastName = useInput()
-  const email = useInput()
-  const password = useInput()
+  const username = useInput();
+  const name = useInput();
+  const lastName = useInput();
+  const email = useInput();
+  const password = useInput();
 
   const submitHandler = async () => {
     try {
-      await axios.post("http://localhost:3002/api/auth/register", {
+      const registered = await axios.post("http://localhost:3002/api/auth/register", {
         username: username.value,
         name: name.value,
         lastName: lastName.value,
         email: email.value,
         password: password.value,
       });
-      onClose()
+      if (registered.status === 201) {
+        toast({
+          title: "Registered Succesfully",
+          status: "success",
+          duration: 4000,
+          position: "top",
+          isClosable: true,
+          containerStyle: {
+            marginTop: "80px",
+          },
+        });
+      }
+      onClose();
     } catch ({ response }) {
       console.log("Register Catch repsonse: ", response);
     }
-  }
+  };
 
   return (
     <FormControl isRequired>
       <FormLabel mt="10px">First Name</FormLabel>
-      <Input placeholder="First Name" id="firstName" {...name}/>
-      <FormLabel mt="10px" >Last Name</FormLabel>
-      <Input placeholder="Last Name" id="lastName" {...lastName}/>
-      <FormLabel mt="10px" >Username</FormLabel>
-      <Input placeholder="Username" id="username" {...username}/>
-      <FormLabel mt="10px" >Email</FormLabel>
-      <Input placeholder="Email" id="email" {...email}/>
-      <FormLabel mt="10px" >Password</FormLabel>
+      <Input placeholder="First Name" id="firstName" {...name} />
+      <FormLabel mt="10px">Last Name</FormLabel>
+      <Input placeholder="Last Name" id="lastName" {...lastName} />
+      <FormLabel mt="10px">Username</FormLabel>
+      <Input placeholder="Username" id="username" {...username} />
+      <FormLabel mt="10px">Email</FormLabel>
+      <Input placeholder="Email" id="email" {...email} />
+      <FormLabel mt="10px">Password</FormLabel>
       <InputGroup size="md">
         <Input
           pr="4.5rem"
@@ -62,15 +77,11 @@ const FormRegister = ({onClose}) => {
           </Button>
         </InputRightElement>
       </InputGroup>
-      <Button
-        onClick={submitHandler}
-        mt="15px"
-        position="relative"
-        left="378px"
-        colorScheme="whatsapp"
-      >
-        Submit
-      </Button>
+      <Box display="flex" justifyContent="flex-end">
+        <Button onClick={submitHandler} mt="15px" colorScheme="whatsapp">
+          Submit
+        </Button>
+      </Box>
     </FormControl>
   );
 };

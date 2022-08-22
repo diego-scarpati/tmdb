@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import {
   Modal,
   ModalOverlay,
@@ -7,13 +7,10 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
-  Button,
   useDisclosure,
   Box,
 } from "@chakra-ui/react";
-import useInput from "../hooks/useInputs";
 import FormLogin from "./FromLogin";
-import ModalRegister from "./ModalRegister";
 
 const ModalLogin = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();

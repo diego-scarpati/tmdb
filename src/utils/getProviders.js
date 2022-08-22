@@ -8,7 +8,6 @@ const getProviders = async (type, id) => {
         params: { api_key: "6edac15cca9bd35488d662783103bd8f" },
       }
     )
-    console.log("Providers", providers.data.results)
     return providers.data.results;
   } catch (error) {
     console.log("axios error", error);
